@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Agent Harness Playbook</title>
+<style>
+:root {
+  color-scheme: light;
+  --warmdoc-bg: #f7f3ea;
+  --warmdoc-paper: #fffdf8;
+  --warmdoc-soft: #efe9de;
+  --warmdoc-hover: #f3e9df;
+  --warmdoc-border: #d8d0c3;
+  --warmdoc-text: #29251f;
+  --warmdoc-muted: #6f675d;
+  --warmdoc-accent: #a84f36;
+  --warmdoc-accent-dark: #7a3f2b;
+  --warmdoc-green: #44695a;
+  --warmdoc-amber: #946015;
+  --warmdoc-red: #a9433b;
+  --warmdoc-purple: #6d5a8f;
+  --warmdoc-code: #efe8dc;
+  --warmdoc-pre: #26231f;
+
+  /* Common aliases used by the existing documents. */
+  --bg: var(--warmdoc-bg);
+  --white: var(--warmdoc-paper);
+  --panel: var(--warmdoc-paper);
+  --panel2: var(--warmdoc-soft);
+  --card: var(--warmdoc-paper);
+  --card2: var(--warmdoc-soft);
+  --soft: var(--warmdoc-soft);
+  --ink: var(--warmdoc-text);
+  --txt: var(--warmdoc-text);
+  --text: var(--warmdoc-text);
+  --navy: var(--warmdoc-text);
+  --muted: var(--warmdoc-muted);
+  --dim: var(--warmdoc-muted);
+  --line: var(--warmdoc-border);
+  --border: var(--warmdoc-border);
+  --accent: var(--warmdoc-accent);
+  --blue: var(--warmdoc-accent);
+  --blue-dark: var(--warmdoc-accent-dark);
+  --blue-bg: #f4e4dc;
+  --serviceone: var(--warmdoc-accent);
+  --serviceone-bg: #f4e4dc;
+  --team: var(--warmdoc-accent);
+  --team-bg: #f4e4dc;
+  --pri: var(--warmdoc-red);
+  --pri-bg: #f8e8e4;
+  --good: var(--warmdoc-green);
+  --ok: var(--warmdoc-green);
+  --green: var(--warmdoc-green);
+  --llm: var(--warmdoc-green);
+  --ok-bg: #e8efe9;
+  --green-bg: #e8efe9;
+  --llm-bg: #e8efe9;
+  --teal: #4f7465;
+  --teal-bg: #e8efe9;
+  --warn: var(--warmdoc-amber);
+  --amb: var(--warmdoc-amber);
+  --amber: var(--warmdoc-amber);
+  --warn-bg: #fbf0dd;
+  --amb-bg: #fbf0dd;
+  --amber-bg: #fbf0dd;
+  --bad: var(--warmdoc-red);
+  --red: var(--warmdoc-red);
+  --red-bg: #f8e8e4;
+  --purple: var(--warmdoc-purple);
+  --pur: var(--warmdoc-purple);
+  --ch: var(--warmdoc-purple);
+  --servicetwo: var(--warmdoc-purple);
+  --purple-bg: #f0ebf3;
+  --pur-bg: #f0ebf3;
+  --ch-bg: #f0ebf3;
+  --servicetwo-bg: #f0ebf3;
+  --servicethree: var(--warmdoc-amber);
+  --servicethree-bg: #fbf0dd;
+  --collab: #565b86;
+  --collab-bg: #ececf3;
+  --code-bg: var(--warmdoc-code);
+  --pre-bg: var(--warmdoc-pre);
+  --shadow: 0 12px 34px rgba(74, 58, 42, 0.09);
+}
+
+html {
+  background: var(--warmdoc-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--warmdoc-bg) !important;
+  color: var(--warmdoc-text) !important;
+  font-family: "Segoe UI", "PingFang TC", "Noto Sans TC", system-ui, sans-serif !important;
+}
+
+header.hero,
+.hero {
+  color: var(--warmdoc-text) !important;
+  background: linear-gradient(135deg, #f1dfd2 0%, #fbf8f1 60%, #e7eee5 100%) !important;
+  border-bottom: 1px solid var(--warmdoc-border) !important;
+}
+
+header:not(.hero) {
+  padding: 28px 30px !important;
+  border: 1px solid var(--warmdoc-border) !important;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f1dfd2 0%, #fbf8f1 64%, #efe8dc 100%);
+  box-shadow: var(--shadow);
+}
+
+header.hero p,
+.hero p,
+.hero-lead,
+.hero .sub,
+.hero .meta {
+  color: var(--warmdoc-muted) !important;
+}
+
+.hero::after {
+  border-color: rgba(168, 79, 54, 0.18) !important;
+  box-shadow:
+    0 0 0 44px rgba(168, 79, 54, 0.035),
+    0 0 0 92px rgba(68, 105, 90, 0.025) !important;
+}
+
+.hero .badge,
+.hero .eyebrow,
+.hero .pill,
+header.hero .badge {
+  color: var(--warmdoc-text) !important;
+  background: rgba(255, 253, 248, 0.72) !important;
+  border-color: rgba(111, 103, 93, 0.34) !important;
+}
+
+.eyebrow::before {
+  background: var(--warmdoc-accent) !important;
+}
+
+main {
+  background: var(--warmdoc-paper) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.topnav,
+#bar {
+  background: rgba(255, 253, 248, 0.96) !important;
+  border-color: var(--warmdoc-border) !important;
+}
+
+.topnav strong,
+.topnav a {
+  color: var(--warmdoc-text) !important;
+}
+
+.topnav a:hover,
+.topnav a:focus {
+  color: var(--warmdoc-accent-dark) !important;
+  background: var(--warmdoc-hover) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+strong {
+  color: var(--warmdoc-text);
+}
+
+h2 {
+  border-color: var(--warmdoc-border) !important;
+}
+
+h4,
+a {
+  color: var(--warmdoc-accent) !important;
+}
+
+h2.sec .num {
+  color: var(--warmdoc-paper) !important;
+}
+
+a:hover,
+a:focus {
+  color: var(--warmdoc-accent-dark) !important;
+}
+
+button,
+.button,
+a.button,
+[role="button"] {
+  color: var(--warmdoc-paper) !important;
+  background: var(--warmdoc-accent) !important;
+  border: 1px solid var(--warmdoc-accent) !important;
+  border-radius: 8px;
+  padding: 7px 13px;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus,
+.button:hover,
+.button:focus,
+a.button:hover,
+a.button:focus,
+[role="button"]:hover,
+[role="button"]:focus {
+  color: #fff !important;
+  background: var(--warmdoc-accent-dark) !important;
+  border-color: var(--warmdoc-accent-dark) !important;
+}
+
+button:focus-visible,
+.button:focus-visible,
+a.button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid rgba(168, 79, 54, 0.32);
+  outline-offset: 2px;
+}
+
+code {
+  color: var(--warmdoc-accent-dark) !important;
+  background: var(--warmdoc-code) !important;
+  border-color: var(--warmdoc-border) !important;
+}
+
+pre {
+  color: #f5efe5 !important;
+  background: var(--warmdoc-pre) !important;
+  border-color: #403a33 !important;
+}
+
+pre code {
+  color: inherit !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+table {
+  color: var(--warmdoc-text);
+  background: var(--warmdoc-paper) !important;
+}
+
+th,
+td {
+  border-color: var(--warmdoc-border) !important;
+}
+
+th {
+  color: var(--warmdoc-text) !important;
+  background: var(--warmdoc-soft) !important;
+}
+
+tbody tr:nth-child(even),
+tbody tr:nth-child(even) td {
+  background: #fbf8f1 !important;
+}
+
+tbody tr:hover,
+tbody tr:hover td {
+  color: var(--warmdoc-text) !important;
+  background: var(--warmdoc-hover) !important;
+}
+
+.card,
+.kpi,
+.gr,
+.nav,
+figure,
+.item,
+.box,
+.callout {
+  color: var(--warmdoc-text);
+  background: var(--warmdoc-paper);
+  border-color: var(--warmdoc-border);
+  box-shadow: 0 6px 20px rgba(74, 58, 42, 0.055);
+}
+
+.kpi b,
+.gr b,
+.value {
+  color: var(--warmdoc-text) !important;
+}
+
+.nav,
+.table-wrap,
+figure {
+  background: var(--warmdoc-paper) !important;
+  border-color: var(--warmdoc-border) !important;
+}
+
+.box.tip,
+.callout.info {
+  background: #edf1eb !important;
+  border-color: var(--warmdoc-green) !important;
+}
+
+.box.fact,
+.callout.good,
+.item.done {
+  background: #e8efe9 !important;
+  border-color: var(--warmdoc-green) !important;
+}
+
+.box.warn,
+.callout.warn {
+  background: #fbf0dd !important;
+  border-color: var(--warmdoc-amber) !important;
+}
+
+.box.unv,
+.callout.purple {
+  background: #f0ebf3 !important;
+  border-color: var(--warmdoc-purple) !important;
+}
+
+.callout.bad {
+  background: #f8e8e4 !important;
+  border-color: var(--warmdoc-red) !important;
+}
+
+.verdict {
+  color: var(--warmdoc-text) !important;
+  background: linear-gradient(135deg, #f1dfd2, #fffdf8 58%, #e7eee5) !important;
+  border-color: var(--warmdoc-border) !important;
+  box-shadow: var(--shadow);
+}
+
+.quote,
+blockquote {
+  color: var(--warmdoc-text) !important;
+  background: #f0ebf3 !important;
+  border-color: var(--warmdoc-purple) !important;
+}
+
+.bar,
+.bar-track,
+#bar .track {
+  background: #e6dfd4 !important;
+}
+
+.bar i,
+.bar-fill,
+#bar .fill {
+  background: linear-gradient(90deg, var(--warmdoc-accent), var(--warmdoc-green)) !important;
+}
+
+.stage {
+  background: linear-gradient(90deg, #f4e4dc, var(--warmdoc-paper)) !important;
+  border-color: var(--warmdoc-accent) !important;
+}
+
+.xlinks a,
+.docnav a {
+  color: var(--warmdoc-text) !important;
+  background: var(--warmdoc-paper) !important;
+  border-color: var(--warmdoc-border) !important;
+}
+
+.xlinks a:hover,
+.docnav a:hover {
+  color: var(--warmdoc-accent-dark) !important;
+  background: var(--warmdoc-hover) !important;
+}
+
+.docnav a.here {
+  color: var(--warmdoc-paper) !important;
+  background: var(--warmdoc-accent) !important;
+  border-color: var(--warmdoc-accent) !important;
+}
+
+.tag {
+  color: #514b43 !important;
+  background: var(--warmdoc-soft) !important;
+  border-color: #c9c0b4 !important;
+}
+
+.pill.p-serviceone,
+.pill.p-team,
+.tag.t-have {
+  color: var(--warmdoc-accent-dark) !important;
+  background: #f4e4dc !important;
+  border-color: #d8b7a8 !important;
+}
+
+.tag.ok,
+.tag.t-ver,
+.t-ship,
+.t-own,
+.status.pass,
+.st-ok {
+  color: #315447 !important;
+  background: #e1ece3 !important;
+  border-color: #abc4b2 !important;
+}
+
+.tag.wip,
+.t-open,
+.t-exp,
+.status.partial,
+.st-part {
+  color: #754b10 !important;
+  background: #f8e9ca !important;
+  border-color: #dfc189 !important;
+}
+
+.tag.no,
+.t-drop,
+.t-none,
+.status.fail,
+.st-no {
+  color: #853730 !important;
+  background: #f4dfdb !important;
+  border-color: #d8a9a2 !important;
+}
+
+.tag.local,
+.tag.q,
+.tag.t-unv,
+.tag.t-cond {
+  color: #594675 !important;
+  background: #f0ebf3 !important;
+  border-color: #c8bad2 !important;
+}
+
+.foot,
+footer,
+.muted,
+.note,
+.small,
+small,
+.sub,
+.src,
+.dt,
+figcaption {
+  color: var(--warmdoc-muted) !important;
+}
+
+@media (max-width: 720px) {
+  header:not(.hero) {
+    padding: 22px !important;
+  }
+
+  .wrap,
+  main,
+  section,
+  .card,
+  .box,
+  .callout,
+  figure {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .item {
+    grid-template-columns: 26px minmax(0, 1fr) !important;
+  }
+
+  .item > * {
+    min-width: 0;
+  }
+
+  .nav ol {
+    columns: 1 !important;
+  }
+
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  code {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  pre,
+  .ascii {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  pre code {
+    white-space: pre !important;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  img,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+
+  header.hero,
+  .hero,
+  header:not(.hero),
+  main,
+  .card,
+  .kpi,
+  .gr {
+    box-shadow: none !important;
+  }
+}
+
+
+*{box-sizing:border-box}
+body{margin:0;font-size:15px;line-height:1.72}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px 96px}
+.hero{padding:54px 24px 42px;margin-bottom:28px}
+.hero-inner{max-width:1160px;margin:0 auto}
+.hero h1{font-size:clamp(32px,5vw,52px);line-height:1.08;margin:0 0 14px;max-width:940px}
+.hero-lead{font-size:18px;max-width:860px}
+.meta{font-size:13px;margin-top:14px}
+.layout{display:grid;grid-template-columns:235px minmax(0,1fr);gap:28px;align-items:start}
+.toc{position:sticky;top:16px;padding:18px;border:1px solid var(--border);border-radius:14px;background:var(--paper);max-height:calc(100vh - 32px);overflow:auto}
+.toc strong{font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.toc a{display:block;padding:6px 8px;border-radius:7px;text-decoration:none;font-size:13px}
+main{padding:30px 36px;border:1px solid var(--border);border-radius:18px}
+h2{margin:48px 0 16px;padding-bottom:9px;font-size:25px}
+h3{margin:28px 0 10px;font-size:18px}
+p{margin:10px 0}
+.callout{border:1px solid var(--border);border-left-width:5px;border-radius:12px;padding:14px 17px;margin:18px 0}
+.callout .title{display:block;margin-bottom:5px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{border:1px solid var(--border);border-radius:13px;padding:16px 18px}
+.card h3{margin-top:0}
+.table-wrap{overflow-x:auto;margin:14px 0 22px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:9px 11px;text-align:left;vertical-align:top;border:1px solid var(--border)}
+th{font-size:13px}
+.cmd{font:13px/1.65 Consolas,"Cascadia Mono",monospace;background:var(--code-bg);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;margin:12px 0;overflow-wrap:anywhere}
+.pill{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:2px 9px;margin:2px 4px 2px 0;font-size:12px;background:var(--soft)}
+figure{margin:20px 0;padding:14px;border:1px solid var(--border);border-radius:14px;overflow:auto}
+figcaption{font-size:12px;color:var(--muted);margin-top:8px}
+svg text{fill:var(--text);font-family:"Segoe UI","PingFang TC","Noto Sans TC",system-ui,sans-serif}
+.footer{margin-top:46px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:12px}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.toc{position:static;max-height:none}.grid2{grid-template-columns:1fr}main{padding:24px 19px}}
+
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <span class="pill">Public edition</span>
+    <h1>Agent Harness Playbook</h1>
+    <p class="hero-lead">A provider-neutral pattern for keeping agent instructions small, retrieving knowledge only when needed, packaging repeatable workflows, and verifying session and tool behavior. Developed against a command-line coding agent, but the pattern does not depend on any one vendor.</p>
+    <p class="meta">Created: <time datetime="2026-09-20">2026-09-20</time> · Last updated: <time datetime="2026-09-20">2026-09-20</time></p>
+    <p class="meta">This edition contains no organization-specific services, product codenames, account details, machine identifiers, private paths, usage telemetry, credentials, or private knowledge catalogs.</p>
+  </div>
+</header>
+<div class="wrap">
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <strong>Contents</strong>
+  <a href="#principle">Core principle</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#placement">Where information belongs</a>
+  <a href="#memory">Memory pattern</a>
+  <a href="#skills">Skills and subagents</a>
+  <a href="#ritual">Session-state ritual</a>
+  <a href="#tools">Tool profiles</a>
+  <a href="#verification">Verification and recovery</a>
+  <a href="#failures">Failure patterns</a>
+  <a href="#checklist">Public adaptation checklist</a>
+</nav>
+<main>
+<section id="principle">
+<h2>1. Core principle</h2>
+<div class="callout good"><strong class="title">Do not put every rule, fact, workflow, and tool into one always-loaded file.</strong>
+Separate them by load behavior and responsibility. This reduces context cost, prevents contradictory copies, and gives each change a clear verification path.</div>
+<div class="table-wrap"><table><thead><tr><th>Concern</th><th>Best home</th><th>Why</th></tr></thead><tbody><tr><td>Rules that must never be missed</td><td>Global instructions</td><td>They must be visible on every request, so keep them short.</td></tr><tr><td>Verified facts, decisions, and incidents</td><td>Indexed memory files</td><td>They should be retrieved when relevant, not sent continuously.</td></tr><tr><td>Repeatable multi-step workflows</td><td>Skills</td><td>They need triggers, ordered steps, guardrails, and completion criteria.</td></tr><tr><td>External capabilities</td><td>Tool servers</td><td>Capability configuration should remain separate from policy and knowledge.</td></tr><tr><td>Per-session progress and artifacts</td><td>Session state</td><td>Conversation-specific state should not become global memory.</td></tr></tbody></table></div>
+</section>
+
+<section id="architecture">
+<h2>2. Architecture</h2>
+
+<figure aria-labelledby="architecture-caption">
+<svg viewBox="0 0 1040 420" role="img" aria-label="Public harness architecture">
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#6f675d"/></marker></defs>
+  <rect x="35" y="32" width="220" height="86" rx="14" fill="#f4e4dc" stroke="#a84f36"/>
+  <text x="55" y="62" font-weight="700">Launch wrapper</text><text x="55" y="87">name · mode · tool profiles</text>
+  <rect x="320" y="32" width="220" height="86" rx="14" fill="#fbf0dd" stroke="#946015"/>
+  <text x="340" y="62" font-weight="700">CLI host</text><text x="340" y="87">owns one or more sessions</text>
+  <rect x="605" y="32" width="220" height="86" rx="14" fill="#e8efe9" stroke="#44695a"/>
+  <text x="625" y="62" font-weight="700">Session state</text><text x="625" y="87">name · events · artifacts</text>
+  <line x1="255" y1="75" x2="316" y2="75" stroke="#6f675d" marker-end="url(#arrow)"/>
+  <line x1="540" y1="75" x2="601" y2="75" stroke="#6f675d" marker-end="url(#arrow)"/>
+  <rect x="45" y="185" width="180" height="105" rx="13" fill="#fffdf8" stroke="#a84f36"/><text x="63" y="215" font-weight="700">Instructions</text><text x="63" y="240">always-on rules</text><text x="63" y="265" font-size="12">small and stable</text>
+  <rect x="240" y="185" width="180" height="105" rx="13" fill="#fffdf8" stroke="#6d5a8f"/><text x="258" y="215" font-weight="700">Memory</text><text x="258" y="240">facts and decisions</text><text x="258" y="265" font-size="12">loaded on demand</text>
+  <rect x="435" y="185" width="180" height="105" rx="13" fill="#fffdf8" stroke="#44695a"/><text x="453" y="215" font-weight="700">Skills</text><text x="453" y="240">repeatable workflows</text><text x="453" y="265" font-size="12">triggered when needed</text>
+  <rect x="630" y="185" width="180" height="105" rx="13" fill="#fffdf8" stroke="#946015"/><text x="648" y="215" font-weight="700">Tool servers</text><text x="648" y="240">external capabilities</text><text x="648" y="265" font-size="12">default + opt-in</text>
+  <rect x="825" y="185" width="180" height="105" rx="13" fill="#fffdf8" stroke="#d8d0c3"/><text x="843" y="215" font-weight="700">Verification</text><text x="843" y="240">tests · hashes · rollback</text><text x="843" y="265" font-size="12">prove state, not claims</text>
+  <rect x="175" y="340" width="690" height="48" rx="14" fill="#edf1eb" stroke="#44695a"/>
+  <text x="200" y="370" font-weight="700">Portable principle: separate rules, knowledge, workflows, capabilities, and state.</text>
+</svg>
+<figcaption id="architecture-caption">The architecture is independent of any one organization, product, or service provider.</figcaption>
+</figure>
+
+<p>A launch wrapper may add naming, permissions, and optional tool profiles, but the underlying pattern does not depend on a private wrapper. The CLI host snapshots some configuration at startup, so long-lived sessions may continue using older instructions or skill definitions until restarted.</p>
+</section>
+
+<section id="placement">
+<h2>3. Where information belongs</h2>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Decision</th></tr></thead><tbody><tr><td>Must this behavior apply in every session?</td><td>Put one concise rule in global instructions and link to detail.</td></tr><tr><td>Is this a triggerable workflow with several steps or decision branches?</td><td>Create a skill.</td></tr><tr><td>Is this a fact, decision, failure lesson, or project state?</td><td>Write an indexed memory entry.</td></tr><tr><td>Is this only a low-frequency runbook whose main value is its trap list?</td><td>Prefer memory over a permanently advertised skill.</td></tr><tr><td>Does this add a capability rather than knowledge?</td><td>Configure a tool server or local language service.</td></tr></tbody></table></div>
+<div class="callout info"><strong class="title">One source of truth per topic</strong>
+Update the existing entry when new evidence overturns an old conclusion. Parallel summaries drift and force future sessions to guess which one is authoritative.</div>
+</section>
+
+<section id="memory">
+<h2>4. Memory pattern</h2>
+<ol>
+  <li>Search the memory index and skills before creating a new entry.</li>
+  <li>Choose a category that expresses why the entry exists: reference, feedback, project state, evaluation knowledge, or append-only log.</li>
+  <li>Keep the body self-contained: conclusion, evidence, date, boundaries, and how to apply it.</li>
+  <li>Add one concise routing cue to the index.</li>
+  <li>Verify the new file exists, the index points to it, and the global instruction file did not receive a copied index entry.</li>
+  <li>When evidence changes, correct the source entry in place and mark the superseded conclusion.</li>
+</ol>
+<p>The index should be complete but terse. A missing row makes knowledge undiscoverable; a verbose row turns the index into another large document.</p>
+</section>
+
+<section id="skills">
+<h2>5. Skills and subagents</h2>
+<div class="grid2">
+  <div class="card"><h3>Use a skill when</h3><p>The same task recurs, has a recognizable trigger, needs ordered steps or branching judgment, and contains guardrails that must not be reconstructed each time.</p></div>
+  <div class="card"><h3>Use a subagent when</h3><p>The work is a bounded, one-off investigation or independent review that benefits from a separate context window.</p></div>
+</div>
+<p>A skill can still launch a subagent. The skill preserves the durable workflow; the subagent provides an independent execution context for one step.</p>
+<div class="table-wrap"><table><thead><tr><th>Keep in the main skill file</th><th>Move to references</th></tr></thead><tbody><tr><td>Trigger and mode routing</td><td>Long prompt templates</td></tr><tr><td>Destructive-operation guardrails</td><td>Branch-specific procedures</td></tr><tr><td>Checks whose omission would be silent</td><td>Large examples and background material</td></tr><tr><td>Completion and validation contract</td><td>Rare troubleshooting paths</td></tr></tbody></table></div>
+<p>After changing a skill, restart or reload through the supported CLI mechanism and verify that the runtime sees the new definition.</p>
+</section>
+
+<section id="ritual">
+<h2>6. Session-state ritual</h2>
+<p>A lightweight ritual makes a session self-describing without turning the conversation into project-management overhead:</p>
+<ol>
+  <li>Capture a short title and the intended final product.</li>
+  <li>Store the title in session metadata so session lists are searchable.</li>
+  <li>Append a portable index entry if session history is machine-local.</li>
+  <li>End each response with a compact Recap.</li>
+  <li>Extend the title when the main topic changes instead of replacing the earlier topic.</li>
+</ol>
+<div class="table-wrap"><table><thead><tr><th>Recap line</th><th>Purpose</th></tr></thead><tbody><tr><td><code>Recap:</code></td><td>Stable header.</td></tr><tr><td><code>Title</code></td><td>Current session topic.</td></tr><tr><td><code>This turn</code></td><td>Work completed in the current response.</td></tr><tr><td><code>Next</code></td><td>Next actionable step, or an explicit statement that none remains.</td></tr><tr><td><code>Final Product</code></td><td>Deliverable that defines completion.</td></tr></tbody></table></div>
+<div class="callout warn"><strong class="title">Metadata must remain valid</strong>
+Quote values written to YAML and parse-check the file immediately. A successful write is not proof that the next resume will succeed.</div>
+</section>
+
+<section id="tools">
+<h2>7. Tool profiles</h2>
+<p>Keep the daily tool set small. Add specialized or stateful servers through explicit opt-in profiles.</p>
+<div class="table-wrap"><table><thead><tr><th>Profile type</th><th>Use</th><th>Trade-off</th></tr></thead><tbody><tr><td>Default</td><td>Common repository, documentation, and work-management tasks</td><td>Available in every session; every added server has recurring cost.</td></tr><tr><td>Isolated web</td><td>Public browsing and browser automation</td><td>Supports concurrent sessions but has no signed-in state.</td></tr><tr><td>Authenticated web</td><td>Sites that require an existing login</td><td>A browser profile may be single-holder and cause contention.</td></tr><tr><td>Domain-specific</td><td>Specialized engineering, data, or security work</td><td>Load only for the task that needs it.</td></tr><tr><td>Full diagnostic</td><td>Short-lived troubleshooting</td><td>Useful for diagnosis, too expensive and failure-prone as a daily default.</td></tr></tbody></table></div>
+<h3>7.1 Recovery rule</h3>
+<p>Validate a recovery with a real tool call. A successful initialization or reconnect message does not prove the next operation will work.</p>
+</section>
+
+<section id="verification">
+<h2>8. Verification, synchronization, and recovery</h2>
+<div class="table-wrap"><table><thead><tr><th>Area</th><th>Verification principle</th></tr></thead><tbody><tr><td>Instructions</td><td>Assert every mandatory behavior is still present.</td></tr><tr><td>Launcher</td><td>Test argument routing, resume behavior, optional profiles, and removal of retired commands.</td></tr><tr><td>Process teardown</td><td>Use ownership, ancestry, creation time, and a dry run; never kill by process name alone.</td></tr><tr><td>Synchronization</td><td>Compare content hashes, not only timestamps.</td></tr><tr><td>Backups</td><td>Create a before-image and integrity manifest before destructive configuration changes.</td></tr><tr><td>Secrets</td><td>Synchronize placeholders, not secret values; restore secrets from a local protected store.</td></tr><tr><td>New machine</td><td>Restore shared knowledge and tools, then recreate machine-local credentials and state.</td></tr></tbody></table></div>
+</section>
+
+<section id="failures">
+<h2>9. Failure patterns</h2>
+<div class="table-wrap"><table><thead><tr><th>Failure</th><th>Lesson</th></tr></thead><tbody><tr><td>A checker stays green while the system is wrong</td><td>Test the checker against a known failure before trusting it.</td></tr><tr><td>A count looks correct despite missing work</td><td>Verify successful outputs, exact identifiers, hashes, and independent side effects.</td></tr><tr><td>A skill silently disappears</td><td>Validate frontmatter syntax and confirm runtime discovery.</td></tr><tr><td>A session is logged but cannot be found later</td><td>Rename session metadata; a separate log alone does not solve retrieval.</td></tr><tr><td>A configuration file syncs a credential</td><td>Redact before synchronization and keep secret material machine-local.</td></tr><tr><td>A long document remains valid-looking after a broken edit</td><td>Use structural assertions for required and forbidden content.</td></tr><tr><td>Many sessions multiply stateful tool processes</td><td>Close unused hosts and keep stateful tools opt-in.</td></tr><tr><td>A low-level status hides the real cause</td><td>Inspect the raw record and follow the path to the component that performs the final action.</td></tr></tbody></table></div>
+</section>
+
+<section id="checklist">
+<h2>10. Public adaptation checklist</h2>
+<p>Before publishing a harness document, remove or generalize:</p>
+<ul>
+  <li>Organization-specific wrappers, server names, tool inventories, and product codenames.</li>
+  <li>Account names, email addresses, machine names, local absolute paths, session identifiers, and environment-specific IDs.</li>
+  <li>Private usage measurements, process counts, cost figures, incident details, and access/permission statements.</li>
+  <li>Repository or work-item identifiers that are not already public.</li>
+  <li>Secret formats, authentication material, and instructions that reveal protected infrastructure.</li>
+</ul>
+<div class="callout good"><strong class="title">What is safe to keep</strong>
+General architecture, load-behavior trade-offs, memory/skill placement rules, verification methods, public CLI concepts, and failure-prevention patterns that do not depend on a private environment.</div>
+<div class="footer">
+  <p>Generated on 2026-09-20. This public edition is self-contained and intentionally omits the private implementation inventory.</p>
+</div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>
