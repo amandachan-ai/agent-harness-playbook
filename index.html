@@ -558,8 +558,8 @@ svg text{fill:var(--text);font-family:"Segoe UI","PingFang TC","Noto Sans TC",sy
     <span class="pill">Playbook</span>
     <h1>Agent Harness Playbook</h1>
     <p class="hero-lead">A provider-neutral pattern for keeping agent instructions small, retrieving knowledge only when needed, packaging repeatable workflows, and verifying session and tool behavior. Developed against a command-line coding agent, but the pattern does not depend on any one vendor.</p>
-    <p class="meta">Created: <time datetime="2026-09-20">2026-09-20</time> · Last updated: <time datetime="2026-09-20">2026-09-20</time></p>
-    <p class="meta">This edition contains no organization-specific services, product codenames, account details, machine identifiers, private paths, usage telemetry, credentials, or private knowledge catalogs.</p>
+    <p class="meta">Created: <time datetime="2026-09-20">2026-09-20</time> · Last updated: <time datetime="2026-10-27">2026-10-27</time></p>
+    <p class="meta">Personal views, not those of any employer. Examples are generic and illustrative; this playbook contains no employer data, code, product names, or results.</p>
   </div>
 </header>
 <div class="wrap">
@@ -610,7 +610,7 @@ Separate them by load behavior and responsibility. This reduces context cost, pr
 <figcaption id="architecture-caption">The architecture is independent of any one organization, product, or service provider.</figcaption>
 </figure>
 
-<p>A launch wrapper may add naming, permissions, and optional tool profiles, but the underlying pattern does not depend on a private wrapper. The CLI host snapshots some configuration at startup, so long-lived sessions may continue using older instructions or skill definitions until restarted.</p>
+<p>A launch wrapper may add naming, permissions, and optional tool profiles, but the underlying pattern does not depend on any particular wrapper. The CLI host snapshots some configuration at startup, so long-lived sessions may continue using older instructions or skill definitions until restarted.</p>
 </section>
 
 <section id="placement">
@@ -690,7 +690,7 @@ Quote values written to YAML and parse-check the file immediately. A successful 
 <div class="callout good"><strong class="title">What is safe to keep</strong>
 General architecture, load-behavior trade-offs, memory/skill placement rules, verification methods, public CLI concepts, and failure-prevention patterns that do not depend on a private environment.</div>
 <div class="footer">
-  <p>Generated on 2026-09-20. This edition is self-contained and intentionally omits the private implementation inventory.</p>
+  <p>Generated on 2026-09-20. Personal views, not those of any employer.</p>
 </div>
 </section>
 </main>

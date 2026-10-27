@@ -45,9 +45,9 @@ engineering and evaluation share most of their failure modes.
 ## Scope
 
 Developed against a command-line coding agent, but the pattern does not depend
-on any one vendor. Contains no organization-specific services, product
-codenames, account details, machine identifiers, private paths, usage telemetry,
-credentials, or private knowledge catalogs.
+on any one vendor. Personal views, not those of
+any employer. Examples are generic and illustrative; the playbook contains no
+employer data, code, product names, or results.
 
 ## License
 
